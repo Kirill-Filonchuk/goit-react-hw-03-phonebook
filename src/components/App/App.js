@@ -13,6 +13,25 @@ class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    const parsetContacts = JSON.parse(contacts);
+
+    if (parsetContacts) {
+      this.setState({
+        contacts: [...parsetContacts],
+      });
+    }
+  }
+
+  componentDidUpdate(prevState) {
+    // console.log('prevState.contacts', prevState.contacts);
+    // console.log('this.state.contacts', this.state.contacts);
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   formSubmitHandler = ({ name, number }) => {
     const cont = {
       id: shortid.generate(),
@@ -56,24 +75,6 @@ class App extends Component {
     );
     return visibleContact;
   };
-
-  componentDidMount() {
-    const contacts = localStorage.getItem('contacts');
-    const parsetContacts = JSON.parse(contacts);
-
-    if (parsetContacts) {
-      this.setState({
-        contacts: [...parsetContacts],
-      });
-    }
-  }
-  componentDidUpdate(prevState) {
-    // console.log('prevState.contacts', prevState.contacts);
-    // console.log('this.state.contacts', this.state.contacts);
-    if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  }
 
   render() {
     // const normalizedFilter = this.state.filter.toLowerCase();
